@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BankAccount.DTOS\BankAccount.DTOS.csproj" />
+    <ProjectReference Include="..\BankAccount.Entities\BankAccount.Entities.csproj" />
+  </ItemGroup>
+
+</Project>

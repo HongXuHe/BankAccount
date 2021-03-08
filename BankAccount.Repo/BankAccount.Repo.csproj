@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BankAccount.Entities\BankAccount.Entities.csproj" />
+    <ProjectReference Include="..\BankAccount.IRepo\BankAccount.IRepo.csproj" />
+    <ProjectReference Include="..\BankAccount.UOW\BankAccount.UOW.csproj" />
+  </ItemGroup>
+
+</Project>
