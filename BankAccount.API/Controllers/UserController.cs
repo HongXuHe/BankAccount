@@ -84,11 +84,12 @@ namespace BankAccount.API.Controllers
                 return BadRequest("user not exists");
             }
             var userFromDb = await _userRepo.GetEntities(x => true).SingleOrDefaultAsync(x => x.Id == userId);
+            var t = _mapper.Map<UserDto>(userFromDb);
             var editUserDto = _mapper.Map<EditUserDto>(userFromDb);
-            var patchUser = new PatchUserDto();
-            patchDocument.ApplyTo(patchUser, ModelState);
-           var appliedUser = _mapper.Map<EditUserDto>(patchUser);
-            if (!TryValidateModel(appliedUser))
+            var patchDto = new PatchUserDto();
+            patchDocument.ApplyTo(patchDto, ModelState);
+           var  editNewDto = _mapper.Map<PatchUserDto, EditUserDto>(patchDto, editUserDto);
+            if (!TryValidateModel(editNewDto))
             {
                 return ValidationProblem(ModelState);
             }
@@ -103,7 +104,7 @@ namespace BankAccount.API.Controllers
             }
             lock (_lock)
             {
-                var result = _userRepo.EditByDTOAsync(editUserDto).GetAwaiter().GetResult();
+                var result = _userRepo.EditByDTOAsync(editNewDto).GetAwaiter().GetResult();
                 if (result)
                 {
                     return Ok("Update success");

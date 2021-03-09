@@ -9,13 +9,13 @@ namespace BankAccount.DTOS.User
     public class EditUserDto:BaseDTO
     {
 
-        public string FirstName { get;  }
+        public string FirstName { get; set; }
 
 
-        public string LastName { get;  }
-        public string UserName => FirstName + " " + LastName;
+        public string LastName { get; set; }
+        public string UserName { get; set; }
         public string State { get; set; }
         public string PostCode { get; set; }
-        public List<EditAccountDto> AccountEntities { get; } = new List<EditAccountDto>();
+        public List<EditAccountDto> AccountEntities { get; set; } = new List<EditAccountDto>();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using BankAccount.Entities;
 using BankAccount.IRepo;
 using BankAccount.UOW;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
@@ -53,7 +54,7 @@ namespace BankAccount.Repo
         /// <returns></returns>
         public IQueryable<TEntity> GetEntities(Expression<Func<TEntity, bool>> whereLambda)
         {
-            return _context.Set<TEntity>().Where(whereLambda);
+            return _context.Set<TEntity>().AsNoTracking().Where(whereLambda);
         }
     }
 }
