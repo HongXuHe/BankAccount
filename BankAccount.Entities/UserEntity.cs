@@ -12,7 +12,10 @@ namespace BankAccount.Entities
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string UserName { get; set; }
-    
+
+        public string State { get; set; }
+        public string PostCode { get; set; }
+
         #endregion
 
         #region Nav props

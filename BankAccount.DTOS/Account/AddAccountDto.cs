@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 using BankAccount.DTOS.User;
 
@@ -7,10 +8,13 @@ namespace BankAccount.DTOS.Account
 {
     public class AddAccountDto:BaseDTO
     {
+        [Required(ErrorMessage = "AccountName cannot be empty")]
         public string AccountName { get; set; }
-        public Guid AccountNumber { get; set; }
-        public decimal CurrentBalance { get; set; }
+        public Guid AccountNumber { get; set; } = Guid.NewGuid();
+        public decimal CurrentBalance { get; set; } = default;
+
+        [Required(ErrorMessage = "UserId cannot be empty")]
         public Guid UserId { get; set; }
-        public UserDto UserDto { get; set; }
+        public AddUserDto UserEntity { get; set; }
     }
 }

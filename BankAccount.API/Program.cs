@@ -14,28 +14,22 @@ namespace BankAccount.API
 {
     public class Program
     {
+        public static IConfiguration Configuration { get; } = new ConfigurationBuilder()
+        .SetBasePath(Directory.GetCurrentDirectory())
+        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+        .AddEnvironmentVariables()
+        .Build();
         public static void Main(string[] args)
         {
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
-                .Build();
             Log.Logger = new LoggerConfiguration()
-                .WriteTo.Console()
-                .CreateBootstrapLogger();
+                 .ReadFrom.Configuration(Configuration)
+                 .CreateBootstrapLogger();
 
             Log.Information("************************Application Starting up************************");
             try
             {
-                var host = Host.CreateDefaultBuilder(args)
-                    .UseServiceProviderFactory(new AutofacServiceProviderFactory())
-                    .ConfigureWebHostDefaults(webHostBuilder =>
-                    {
-                        webHostBuilder
-                            .UseContentRoot(Directory.GetCurrentDirectory())
-                            .UseIISIntegration()
-                            .UseStartup<Startup>();
-                    })
+                var host = CreateHostBuilder(args)
+                    .UseServiceProviderFactory(new AutofacServiceProviderFactory()) //use autofac
                     .Build();
 
                 host.Run();
@@ -55,8 +49,7 @@ namespace BankAccount.API
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .UseSerilog((context, services, configuration) => configuration
-                    .ReadFrom.Configuration(context.Configuration)
-                )
+                    .ReadFrom.Configuration(context.Configuration))
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();

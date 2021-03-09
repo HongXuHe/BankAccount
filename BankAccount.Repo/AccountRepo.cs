@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using BankAccount.DTOS.Account;
 using BankAccount.Entities;
 using BankAccount.IRepo;
@@ -10,25 +11,21 @@ using Microsoft.Extensions.Logging;
 
 namespace BankAccount.Repo
 {
-   public class AccountRepo:BaseRepo<AccountEntity>, IAccountRepo
+   public class AccountRepo: BaseDTORepo<AccountEntity, AddAccountDto, EditAccountDto>, IAccountRepo
     {
+        #region ctor and props
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ILogger<BaseRepo<AccountEntity>> _logger;
+        private readonly ILogger<BaseDTORepo<AccountEntity>> _logger;
+        private readonly IMapper _mapper;
 
-        public AccountRepo(IUnitOfWork unitOfWork, ILogger<BaseRepo<AccountEntity>> logger) : base(unitOfWork, logger)
+        public AccountRepo(IUnitOfWork unitOfWork, ILogger<BaseDTORepo<AccountEntity>> logger, IMapper mapper)
+            : base(unitOfWork, logger, mapper)
         {
-            _unitOfWork = unitOfWork ?? throw  new  ArgumentNullException(nameof(unitOfWork));
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        }
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        } 
+        #endregion
 
-        public Task CreateAccountByDTOAsync(AddAccountDto addAccountDto)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task EditAccountByDTOAsync(EditAccountDto editAccountDto)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

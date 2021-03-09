@@ -10,10 +10,10 @@ using Microsoft.EntityFrameworkCore.Query;
 
 namespace BankAccount.IRepo
 {
-    public interface IUserRepo:IBaseRepo<UserEntity>
+    public interface IUserRepo:IBaseDTORepo<UserEntity,AddUserDto,EditUserDto>
     {
-        Task CreateUserByDTOAsync(AddUserDto addUserDto);
-        Task EditUserByDTOAsync(EditUserDto editUserDto);
         IQueryable<UserEntity> GetUsersWithAccounts(Expression<Func<UserEntity, bool>> whereLambda);
+        bool UserExists(string userName);
+        bool UserExists(Guid guid);
     }
 }

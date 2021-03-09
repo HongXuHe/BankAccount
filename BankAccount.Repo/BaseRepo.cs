@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace BankAccount.Repo
 {
-    public abstract class BaseRepo<TEntity> : IBaseRepo<TEntity> where TEntity : BaseEntity
+    public abstract class BaseDTORepo<TEntity> : IBaseDTORepo<TEntity> where TEntity : BaseEntity
     {
         #region ctor and props, fields
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ILogger<BaseRepo<TEntity>> _logger;
+        private readonly ILogger<BaseDTORepo<TEntity>> _logger;
         private readonly AccountDbContext _context;
 
-        public BaseRepo(IUnitOfWork unitOfWork, ILogger<BaseRepo<TEntity>> logger)
+        public BaseDTORepo(IUnitOfWork unitOfWork, ILogger<BaseDTORepo<TEntity>> logger)
         {
             _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));

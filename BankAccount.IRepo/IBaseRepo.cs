@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BankAccount.IRepo
 {
-    public interface IBaseRepo<TEntity> where TEntity : BaseEntity
+    public interface IBaseDTORepo<TEntity> where TEntity : BaseEntity
     {
         Task CreateAsync(TEntity entity);
         Task EditAsync(TEntity entity);

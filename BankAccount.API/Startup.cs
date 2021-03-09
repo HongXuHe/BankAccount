@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using Autofac;
 using BankAccount.Entities;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using BankAccount.API.Middlewares;
 
 namespace BankAccount.API
 {
@@ -34,6 +36,7 @@ namespace BankAccount.API
             {
                 options.UseInMemoryDatabase("BankAccount");
             });
+            services.AddAutoMapper(typeof(Startup));
         }
         public void ConfigureContainer(ContainerBuilder builder)
         {
@@ -42,14 +45,18 @@ namespace BankAccount.API
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //}else
+            //{
+            app.UseErrorHandlerMiddleware();
+            //}
 
             app.UseRouting();
 
             //app.UseAuthorization();
+            app.UseFakeAuthMiddleware();
             InitData(app);
             app.UseEndpoints(endpoints =>
             {
@@ -84,7 +91,7 @@ namespace BankAccount.API
                                 CurrentBalance = 1000,
                             }
                         }
-                        
+
                     });
                     db.SaveChanges();
                 }

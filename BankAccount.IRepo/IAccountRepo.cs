@@ -4,12 +4,11 @@ using System.Text;
 using System.Threading.Tasks;
 using BankAccount.DTOS.Account;
 using BankAccount.DTOS.User;
+using BankAccount.Entities;
 
 namespace BankAccount.IRepo
 {
-    public interface IAccountRepo
+    public interface IAccountRepo:IBaseDTORepo<AccountEntity, AddAccountDto, EditAccountDto>
     {
-        Task CreateAccountByDTOAsync(AddAccountDto addAccountDto);
-        Task EditAccountByDTOAsync(EditAccountDto editAccountDto);
     }
 }
