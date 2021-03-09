@@ -1,19 +1,14 @@
+using Autofac;
+using BankAccount.API.Middlewares;
+using BankAccount.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Autofac;
-using BankAccount.Entities;
-using Microsoft.EntityFrameworkCore;
-using Serilog;
-using BankAccount.API.Middlewares;
+using Microsoft.Extensions.Hosting;
 
 namespace BankAccount.API
 {
@@ -32,10 +27,13 @@ namespace BankAccount.API
             {
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
+            //use in memory db
             services.AddDbContext<AccountDbContext>(options =>
             {
                 options.UseInMemoryDatabase("BankAccount");
             });
+
+            //use auto mapper
             services.AddAutoMapper(typeof(Startup));
         }
         public void ConfigureContainer(ContainerBuilder builder)
@@ -45,25 +43,29 @@ namespace BankAccount.API
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //}else
-            //{
-            app.UseErrorHandlerMiddleware();
-            //}
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                //only use error handler when in release mode
+                app.UseErrorHandlerMiddleware();
+            }
 
             app.UseRouting();
 
             //app.UseAuthorization();
             app.UseFakeAuthMiddleware();
-            InitData(app);
+           
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+            InitData(app);
         }
 
+        //give some initialize data to work with
         private void InitData(IApplicationBuilder app)
         {
 

@@ -2,10 +2,6 @@
 using BankAccount.DTOS.Account;
 using BankAccount.DTOS.User;
 using BankAccount.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BankAccount.API.Mapper
 {

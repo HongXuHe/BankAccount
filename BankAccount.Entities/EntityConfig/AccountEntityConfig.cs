@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BankAccount.Entities.EntityConfig
 {
+    /// <summary>
+    /// config account entity
+    /// </summary>
     public class AccountEntityConfig : IEntityTypeConfiguration<AccountEntity>
     {
         public void Configure(EntityTypeBuilder<AccountEntity> builder)
@@ -15,6 +15,7 @@ namespace BankAccount.Entities.EntityConfig
             builder.Property(a => a.AccountNumber).IsRequired();
             builder.HasOne(a => a.UserEntity).WithMany(u => u.AccountEntities).HasForeignKey(a => a.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
+            builder.Property(e => e.Id).ValueGeneratedNever();
         }
     }
 }

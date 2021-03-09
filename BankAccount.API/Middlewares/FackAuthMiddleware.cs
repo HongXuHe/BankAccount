@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -27,41 +26,53 @@ namespace BankAccount.API.Middlewares
 
         public async Task Invoke(HttpContext httpContext)
         {
-            var userName = httpContext.Request.Headers.SingleOrDefault(x => x.Key == "Username").Value.FirstOrDefault();
-            if (userName == null)
+            try
             {
-                httpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                httpContext.Response.ContentType = "application/json";
-                await httpContext.Response.WriteAsync("Authorization Failed", Encoding.UTF8);
-            }
-            else
-            {
-                //get controller, action name
-                var controllerActionDescriptor = httpContext
-                 .GetEndpoint()
-                 .Metadata
-                 .GetMetadata<ControllerActionDescriptor>();
 
-                var controllerName = controllerActionDescriptor.ControllerName;
-                var actionName = controllerActionDescriptor.ActionName;
 
-                //if is create user, and UserName is not Admin will unauthorize
-                if(controllerName=="User" && actionName == "AddUser" && userName !="Admin")
+                var userName = httpContext.Request.Headers.SingleOrDefault(x => x.Key == "Username").Value
+                    .FirstOrDefault();
+                if (userName == null)
                 {
-                    httpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    httpContext.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
                     httpContext.Response.ContentType = "application/json";
-                    await httpContext.Response.WriteAsync("Authorization Failed", Encoding.UTF8);
+                    await httpContext.Response.WriteAsync("Authorization Failed");
                 }
                 else
                 {
-                    await _next.Invoke(httpContext);
-                }
+                    //get controller, action name
+                    var controllerActionDescriptor = httpContext
+                        .GetEndpoint()
+                        .Metadata
+                        .GetMetadata<ControllerActionDescriptor>();
 
+                    var controllerName = controllerActionDescriptor.ControllerName;
+                    var actionName = controllerActionDescriptor.ActionName;
+
+                    //if is create user, and UserName is not Admin will unauthorize
+                    if (controllerName == "User" && actionName == "AddUser" && userName != "Admin")
+                    {
+                        httpContext.Response.StatusCode = (int) HttpStatusCode.Unauthorized;
+                        httpContext.Response.ContentType = "application/json";
+                        await httpContext.Response.WriteAsync("Authorization Failed");
+                    }
+                    else
+                    {
+                        await _next.Invoke(httpContext);
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message,ex);
+                throw;
             }
         }
 
     }
 
+    //extension method
     public static class FackAuthMiddlewareExtensions
     {
         public static IApplicationBuilder UseFakeAuthMiddleware(this IApplicationBuilder builder)

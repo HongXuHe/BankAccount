@@ -1,11 +1,9 @@
 ﻿using BankAccount.DTOS.User;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace BankAccount.DTOS.Account
 {
-   public class AccountDto:BaseDTO
+    public class AccountDto:BaseDTO
     {
         public string AccountName { get; set; }
         public Guid AccountNumber { get; set; } 

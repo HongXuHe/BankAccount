@@ -5,9 +5,7 @@ using BankAccount.IRepo;
 using BankAccount.UOW;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BankAccount.Repo
@@ -32,7 +30,7 @@ namespace BankAccount.Repo
         #endregion
 
         //create by dto
-        public async Task<bool> CreateByDTOAsync(TAddDto addDto)
+        public virtual async Task<bool> CreateByDTOAsync(TAddDto addDto)
         {
             try
             {
@@ -42,6 +40,7 @@ namespace BankAccount.Repo
             }
             catch (Exception e)
             {
+                _logger.LogError(e.Message,e.InnerException);
                 throw new Exception(e.Message, e);
             }
         }
@@ -63,6 +62,7 @@ namespace BankAccount.Repo
             }
             catch (Exception e)
             {
+                _logger.LogError(e.Message,e.InnerException);
                 throw new Exception(e.Message, e);
             }
         }

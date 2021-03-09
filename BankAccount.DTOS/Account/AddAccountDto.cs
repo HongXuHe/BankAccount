@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using BankAccount.DTOS.User;
+using System;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
-using BankAccount.DTOS.User;
 
 namespace BankAccount.DTOS.Account
 {

@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using BankAccount.DTOS.User;
 using BankAccount.Entities;
 using BankAccount.IRepo;
 using BankAccount.UOW;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace BankAccount.Repo
 {
@@ -35,10 +32,21 @@ namespace BankAccount.Repo
             return _unitOfWork.GetDbContext().UserEntities.Include(u => u.AccountEntities).Where(whereLambda);
         }
 
+        /// <summary>
+        /// check user exists according to username
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
         public bool UserExists(string userName)
         {
           return  _unitOfWork.GetDbContext().UserEntities.Any(x=>x.UserName==userName);
         }
+
+        /// <summary>
+        /// check user exist according to id
+        /// </summary>
+        /// <param name="guid"></param>
+        /// <returns></returns>
         public bool UserExists(Guid guid)
         {
             return _unitOfWork.GetDbContext().UserEntities.Any(x => x.Id == guid);
